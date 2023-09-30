@@ -26,9 +26,9 @@ const fetchProducts = async()=> {
 
 const createProduct = async(product)=> {
   const SQL = `
-    INSERT INTO products (id, name) VALUES($1, $2) RETURNING *
+    INSERT INTO products (id, name, price, description) VALUES($1, $2, $3, $4) RETURNING *
   `;
-  const response = await client.query(SQL, [ uuidv4(), product.name]);
+  const response = await client.query(SQL, [ uuidv4(), product.name, product.price, product.description]);
   return response.rows[0];
 };
 
@@ -71,9 +71,9 @@ const updateLineItem = async(lineItem)=> {
 const createLineItem = async(lineItem)=> {
   await ensureCart(lineItem);
   const SQL = `
-  INSERT INTO line_items (product_id, order_id, id) VALUES($1, $2, $3) RETURNING *
+  INSERT INTO line_items (product_id, order_id, id, price) VALUES($1, $2, $3, $4) RETURNING *
 `;
- response = await client.query(SQL, [ lineItem.product_id, lineItem.order_id, uuidv4()]);
+ response = await client.query(SQL, [ lineItem.product_id, lineItem.order_id, uuidv4(), lineItem.price,]);
   return response.rows[0];
 };
 
@@ -116,7 +116,9 @@ const seed = async()=> {
     CREATE TABLE products(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
-      name VARCHAR(100) UNIQUE NOT NULL
+      name VARCHAR(100) UNIQUE NOT NULL,
+      price INTEGER,
+      description TEXT
     );
 
     CREATE TABLE orders(
@@ -131,16 +133,17 @@ const seed = async()=> {
       product_id UUID REFERENCES products(id) NOT NULL,
       order_id UUID REFERENCES orders(id) NOT NULL,
       quantity INTEGER DEFAULT 1,
-      CONSTRAINT product_and_order_key UNIQUE(product_id, order_id)
+      CONSTRAINT product_and_order_key UNIQUE(product_id, order_id),
+      price INTEGER
     );
 
   `;
   await client.query(SQL);
   const [foo, bar, bazz] = await Promise.all([
-    createProduct({ name: 'foo' }),
-    createProduct({ name: 'bar' }),
-    createProduct({ name: 'bazz' }),
-    createProduct({ name: 'quq' }),
+    createProduct({ name: 'foo', price: 100, description: 'This is foo' }),
+    createProduct({ name: 'bar', price: 150, description: 'This is bar' }),
+    createProduct({ name: 'bazz', price: 400, description: 'This is bazz' }),
+    createProduct({ name: 'quq', price: 850, description: 'This is quq' }),
   ]);
   let orders = await fetchOrders();
   let cart = orders.find(order => order.is_cart);
