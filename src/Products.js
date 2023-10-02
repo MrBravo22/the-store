@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
+
 
   //Alphabetically sort products
   const sortedProducts = products.slice().sort((a, b) => a.name.localeCompare(b.name));
@@ -13,6 +14,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
         currency: 'USD',
       }).format(priceInDollars);
     };
+
 
   return (
     <div>
@@ -33,6 +35,29 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
           })
         }
       </ul>
+      <h3>Add a New Product</h3>
+      <form>
+        <div>
+          <label>Name:</label>
+          <input type="text" name="name" value/>
+        </div>
+        <div>
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value
+          ></textarea>
+        </div>
+        <div>
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            value
+          />
+        </div>
+        <button type="submit">Add Product</button>
+      </form>
     </div>
   );
 };
