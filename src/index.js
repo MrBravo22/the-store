@@ -62,6 +62,12 @@ const App = ()=> {
     setOrders(response.data);
   };
 
+  const createProduct = async (product) => {
+
+    const {data} = await axios.post('/api/products', product)
+    setProducts([...products,data])
+  };
+
   const removeFromCart = async(lineItem)=> {
     const response = await axios.delete(`/api/lineItems/${lineItem.id}`);
     setLineItems(lineItems.filter( _lineItem => _lineItem.id !== lineItem.id));
@@ -86,6 +92,7 @@ const App = ()=> {
           cartItems = { cartItems }
           createLineItem = { createLineItem }
           updateLineItem = { updateLineItem }
+          createProduct = { createProduct }
         />
         <Orders
           orders = { orders }

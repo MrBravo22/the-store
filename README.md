@@ -16,7 +16,7 @@
 - [x] Show the quantity of the line items in the orders section.
 - [x] The total value of the items in the cart should be shown in the cart section.
 - [x] If no items are in the cart, a message should appear which states "Add some items to your cart".
-- [ ] A user should be able to add a new product by entering a name, description, and a price in a form in the products section.
+- [x] A user should be able to add a new product by entering a name, description, and a price in a form in the products section.
 - [ ] A reviews section should be added. Each review will belong to a product. A review should have a column called txt which take a max of 255 characters. It should also have a rating column which is an INTEGER. Ratings should be from 1 to 5. (seed data for reviews)
 - [ ] The reviews in review section should be grouped by product.
 - [ ] A user should be able to increment and decrement the number of items in their carts.

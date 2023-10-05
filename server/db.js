@@ -163,5 +163,6 @@ module.exports = {
   deleteLineItem,
   updateOrder,
   seed,
+  createProduct,
   client
 };

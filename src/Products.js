@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
+
+const Products = ({ products, cartItems, createLineItem, updateLineItem, createProduct })=> {
+
+const [productName, setProductName] = useState("");
+const [description, setDescription] = useState("");
+const [price, setPrice] = useState("");
 
 
   //Alphabetically sort products
@@ -14,11 +19,18 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
         currency: 'USD',
       }).format(priceInDollars);
     };
+    const addProduct = (event) => {
+      event.preventDefault ()
+      const newProduct = {name: productName, description: description, price: price * 1}
+      createProduct (newProduct);
+    };
 
 
-  return (
-    <div>
-      <h2>Products</h2>
+
+
+return (
+  <div>
+    <h2>Products</h2>
       <ul>
         {
           sortedProducts.map( (product) => {
@@ -35,30 +47,32 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem })=> {
           })
         }
       </ul>
+
       <h3>Add a New Product</h3>
-      <form>
+      <form onSubmit={ addProduct }>
         <div>
           <label>Name:</label>
-          <input type="text" name="name" value/>
+          <input type="text" value= { productName } onChange= {(event) => {
+            setProductName (event.target.value);
+          }} />
         </div>
         <div>
           <label>Description:</label>
-          <textarea
-            name="description"
-            value
-          ></textarea>
+          <textarea type="text" value={ description } onChange= {(event) => {
+            setDescription (event.target.value);
+          }}></textarea>
         </div>
         <div>
           <label>Price:</label>
-          <input
-            type="number"
-            name="price"
-            value
-          />
+          <input type="text" value={ price } onChange={(event) => {
+            setPrice (event.target.value);
+          }} />
         </div>
         <button type="submit">Add Product</button>
       </form>
     </div>
+
+    
   );
 };
 

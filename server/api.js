@@ -5,7 +5,8 @@ const {
   createLineItem,
   updateLineItem,
   deleteLineItem,
-  updateOrder
+  updateOrder,
+  createProduct,
 } = require('./db');
 
 const express = require('express');
@@ -23,14 +24,9 @@ app.get('/products', async(req, res, next)=> {
 
 app.post('/products', async(req, res, next)=> {
   const body = req.body
+  console.log(req.body)
   try {
-    const SQL=`
-    INSERT INTO products(name, description, price)
-    VALUES($1, $2, $3)
-    RETURNING *
-    `;
-    const response = await client.query(SQL, [req.body.name, req.body.description, req.body.price]);
-    res.send(response.rows)
+    res.send(await createProduct (req.body))
   } catch (error) {
       next(error)
   }
